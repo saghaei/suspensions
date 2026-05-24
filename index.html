@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Suspensions</title>
+
+  <style>
+    body {
+      background-color: #505050;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 60px;
+      font-size: 42px;
+    }
+
+    /* ALL BUTTONS IN ONE ROW */
+    .all-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 80px; /* SPACE BETWEEN PAIRS */
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+    }
+
+    .pair {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pair h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    button {
+      background-color: #222;
+      color: white;
+      border: 1px solid #999;
+      padding: 14px 24px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    video {
+      width: 80%;
+      max-width: 1000px;
+      border-radius: 12px;
+      background: black;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="all-buttons">
+
+    <!-- Poisson -->
+    <div class="pair">
+      <h2>Poisson Suspension</h2>
+
+      <div class="buttons">
+        <button onclick="playVideo('C0_994K.mp4')">
+          994 K
+        </button>
+        
+        <button onclick="playVideo('C0_1050K.mp4')">
+          1050 K
+        </button>
+      </div>
+    </div>
+
+    <!-- Suspension-1 -->
+    <div class="pair">
+      <h2>Suspension-1</h2>
+
+      <div class="buttons">
+        <button onclick="playVideo('C1_953K.mp4')">
+          953 K
+        </button>
+        
+        <button onclick="playVideo('C1_1050K.mp4')">
+          1050 K
+        </button>
+      </div>
+    </div>
+
+    <!-- Suspension-2 -->
+    <div class="pair">
+      <h2>Suspension-2</h2>
+
+      <div class="buttons">
+        <button onclick="playVideo('C2_995K.mp4')">
+          995 K
+        </button>
+        
+        <button onclick="playVideo('C2_1050K.mp4')">
+          1050 K
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VIDEO PLAYER -->
+  <video id="player" controls>
+    <source id="source" src="C0_1050K.mp4" type="video/mp4">
+  </video>
+
+  <script>
+    function playVideo(file) {
+      const player = document.getElementById("player");
+      const source = document.getElementById("source");
+
+      source.src = file;
+
+      player.load();
+    }
+  </script>
+
+</body>
+
+</html>
