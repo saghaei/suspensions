@@ -1,145 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Suspensions</title>
-
+  <title>Iron Suspension Ignition</title>
+  <meta name="description" content="Supplementary videos: ignition of clustered and Poisson suspensions of 10 µm iron particles in air.">
   <style>
+    :root {
+      /* the page takes the videos' own background, so they sit in it seamlessly */
+      --bg: #4b4b4b;
+      --ink: #f4f3f0;
+      --muted: #c9c7c2;
+      --faint: rgba(255, 255, 255, 0.10);
+      --card: rgba(0, 0, 0, 0.14);
+      --clustered: #2fb3dc;
+      --poisson: #e07a2a;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
     body {
-      background-color: #505050;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
       margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
     }
 
+    /* ---------- header ---------- */
+    header { text-align: center; margin-bottom: 36px; }
+    .overline {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--faint);
+      border-radius: 999px;
+      padding: 6px 14px;
+      margin-bottom: 18px;
+    }
     h1 {
-      margin-bottom: 60px;
-      font-size: 42px;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      margin: 0 0 12px;
     }
-
-    /* ALL BUTTONS IN ONE ROW */
-    .all-buttons {
+    .lede {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 17px;
+    }
+    .legend {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      gap: 80px; /* SPACE BETWEEN PAIRS */
-      margin-bottom: 50px;
+      gap: 22px;
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--muted);
       flex-wrap: wrap;
     }
-
-    .pair {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
     }
+    .legend .c::before { background: var(--clustered); }
+    .legend .p::before { background: var(--poisson); }
 
-    .pair h2 {
-      margin-bottom: 20px;
-      font-size: 24px;
+    /* ---------- pair tabs ---------- */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 980px;
+      margin: 0 auto 28px;
     }
-
-    .buttons {
-      display: flex;
-      gap: 15px;
-    }
-
-    button {
-      background-color: #222;
-      color: white;
-      border: 1px solid #999;
-      padding: 14px 24px;
-      font-size: 16px;
-      border-radius: 10px;
+    .tab {
+      appearance: none;
+      border: 1px solid var(--faint);
+      background: var(--card);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 10px;
       cursor: pointer;
-      transition: 0.2s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      font: inherit;
     }
-
-    button:hover {
-      background-color: #333;
+    .tab:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.25); }
+    .tab[aria-selected="true"] {
+      border-color: var(--ink);
+      background: rgba(0, 0, 0, 0.24);
     }
+    .tab .thumbs { display: flex; flex-shrink: 0; }
+    .tab .thumbs img {
+      width: 46px; height: 46px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid var(--bg);
+    }
+    .tab .thumbs img + img { margin-left: -14px; }
+    .tab .thumbs img.c { outline: 2px solid var(--clustered); outline-offset: -2px; }
+    .tab .thumbs img.p { outline: 2px solid var(--poisson); outline-offset: -2px; }
+    .tab b { display: block; font-size: 17px; }
+    .tab small { color: var(--muted); font-size: 13px; }
 
+    /* ---------- the two videos ---------- */
+    .stage {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    figure { margin: 0; position: relative; }
     video {
-      width: 80%;
-      max-width: 1000px;
-      border-radius: 12px;
-      background: black;
-      margin-top: 20px;
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--bg);
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    /* under the video, so it never covers the colour bar or the time stamp */
+    .badge {
+      width: fit-content;
+      margin: 12px auto 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px 7px 10px;
+      border-radius: 999px;
+      background: rgba(20, 20, 20, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .badge i {
+      width: 10px; height: 10px; border-radius: 50%;
+      display: inline-block;
+    }
+    figure.c .badge i { background: var(--clustered); }
+    figure.p .badge i { background: var(--poisson); }
+    .badge em { font-style: normal; font-weight: 400; color: var(--muted); }
+
+    /* ---------- shared controls ---------- */
+    .controls {
+      position: sticky;
+      bottom: 16px;
+      margin: 22px auto 0;
+      max-width: 980px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(30, 30, 30, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--faint);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+    .play {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: var(--ink);
+      color: #222;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .play svg { width: 18px; height: 18px; }
+    .time {
+      flex-shrink: 0;
+      min-width: 82px;
+      font-variant-numeric: tabular-nums;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    input[type="range"] {
+      flex: 1;
+      min-width: 60px;
+      accent-color: var(--ink);
+      cursor: pointer;
+    }
+    .speeds { display: flex; gap: 4px; flex-shrink: 0; }
+    .speeds button {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .speeds button[aria-pressed="true"] {
+      color: var(--ink);
+      border-color: var(--faint);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    footer p { margin: 6px 0; }
+
+    @media (max-width: 760px) {
+      .wrap { padding: 32px 16px 48px; }
+      .tabs { grid-template-columns: 1fr; }
+      .stage { grid-template-columns: 1fr; }
+      .controls { border-radius: 18px; flex-wrap: wrap; gap: 10px; }
+      input[type="range"] { order: 3; flex-basis: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
     }
   </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <header>
+      <span class="overline">Supplementary videos</span>
+      <h1>Ignition of clustered and Poisson iron suspensions</h1>
+      <p class="lede">Particle temperature in spherical suspensions of 10&nbsp;µm iron particles
+        in air, from the start of the simulation to 150&nbsp;ms. Each pair has the same
+        number of particles in the same volume and differs only in how the particles
+        are arranged.</p>
+      <div class="legend">
+        <span class="c">Clustered (homogeneous isotropic turbulence)</span>
+        <span class="p">Poisson (particles placed at random)</span>
+      </div>
+    </header>
 
-  <div class="all-buttons">
+    <nav class="tabs" role="tablist" aria-label="Suspension pair"></nav>
 
-    <!-- Poisson -->
-    <div class="pair">
-      <h2>Poisson Suspension</h2>
+    <section class="stage" aria-live="polite">
+      <figure class="c">
+        <video id="vc" muted playsinline preload="metadata"></video>
+        <figcaption class="badge"><i></i><span id="lc"></span></figcaption>
+      </figure>
+      <figure class="p">
+        <video id="vp" muted playsinline preload="metadata"></video>
+        <figcaption class="badge"><i></i><span id="lp"></span></figcaption>
+      </figure>
+    </section>
 
-      <div class="buttons">
-        <button onclick="playVideo('C0_994K.mp4')">
-          994 K
-        </button>
-        
-        <button onclick="playVideo('C0_1050K.mp4')">
-          1050 K
-        </button>
+    <div class="controls">
+      <button class="play" id="play" aria-label="Play both videos">
+        <svg viewBox="0 0 24 24" fill="currentColor" id="icon"><path d="M7 4v16l13-8z"/></svg>
+      </button>
+      <span class="time" id="time">t = 1 ms</span>
+      <input type="range" id="scrub" min="0" max="15" step="0.01" value="0"
+             aria-label="Simulated time">
+      <div class="speeds" role="group" aria-label="Playback speed">
+        <button data-rate="0.5" aria-pressed="false">0.5×</button>
+        <button data-rate="1" aria-pressed="true">1×</button>
+        <button data-rate="2" aria-pressed="false">2×</button>
       </div>
     </div>
 
-    <!-- Suspension-1 -->
-    <div class="pair">
-      <h2>Suspension-1</h2>
-
-      <div class="buttons">
-        <button onclick="playVideo('C1_953K.mp4')">
-          953 K
-        </button>
-        
-        <button onclick="playVideo('C1_1050K.mp4')">
-          1050 K
-        </button>
-      </div>
-    </div>
-
-    <!-- Suspension-2 -->
-    <div class="pair">
-      <h2>Suspension-2</h2>
-
-      <div class="buttons">
-        <button onclick="playVideo('C2_995K.mp4')">
-          995 K
-        </button>
-        
-        <button onclick="playVideo('C2_1050K.mp4')">
-          1050 K
-        </button>
-      </div>
-    </div>
-
+    <footer>
+      <p>Both videos of a pair play in step; each frame is 1&nbsp;ms of simulated time.</p>
+      <p>Click a video, or press the space bar, to play or pause.</p>
+    </footer>
   </div>
 
-  <!-- VIDEO PLAYER -->
-  <video id="player" controls>
-    <source id="source" src="C0_1050K.mp4" type="video/mp4">
-  </video>
-
   <script>
-    function playVideo(file) {
-      const player = document.getElementById("player");
-      const source = document.getElementById("source");
+    // one entry per pair: loading, particle count, the gas temperature at
+    // which each suspension was simulated (its lowest igniting temperature),
+    // and the moment [ms] both videos open on, the same for the two of them
+    const PAIRS = [
+      { key: "a", phi: "0.20", np: "1.07 × 10⁵", tc: 1021, tp: 1089, open: 35 },
+      { key: "b", phi: "0.35", np: "2.08 × 10⁵", tc: 1007, tp: 1035, open: 112 },
+      { key: "c", phi: "0.50", np: "3.00 × 10⁵", tc: 964,  tp: 1007, open: 100 },
+    ];
+    const vc = document.getElementById("vc"), vp = document.getElementById("vp");
+    const lc = document.getElementById("lc"), lp = document.getElementById("lp");
+    const playBtn = document.getElementById("play"), icon = document.getElementById("icon");
+    const scrub = document.getElementById("scrub"), timeEl = document.getElementById("time");
+    const tabs = document.querySelector(".tabs");
+    const PLAY = '<path d="M7 4v16l13-8z"/>';
+    const PAUSE = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
+    let rate = 1;
 
-      source.src = file;
+    PAIRS.forEach((p, i) => {
+      const b = document.createElement("button");
+      b.className = "tab";
+      b.setAttribute("role", "tab");
+      b.innerHTML =
+        `<span class="thumbs"><img class="c" src="posters/clustered_${p.key}.jpg" alt="">` +
+        `<img class="p" src="posters/poisson_${p.key}.jpg" alt=""></span>` +
+        `<span><b>Pair (${p.key})</b><small>φ = ${p.phi} · N<sub>p</sub> = ${p.np}</small></span>`;
+      b.addEventListener("click", () => select(i));
+      tabs.appendChild(b);
+    });
 
-      player.load();
+    function select(i) {
+      const p = PAIRS[i];
+      pause();
+      [...tabs.children].forEach((t, j) => t.setAttribute("aria-selected", j === i));
+      vc.poster = `posters/clustered_${p.key}.jpg`;
+      vp.poster = `posters/poisson_${p.key}.jpg`;
+      vc.src = `clustered_${p.key}.mp4`;
+      vp.src = `poisson_${p.key}.mp4`;
+      lc.innerHTML = `Clustered (${p.key}) <em>· T<sub>g</sub> = ${p.tc} K</em>`;
+      lp.innerHTML = `Poisson (${p.key}) <em>· T<sub>g</sub> = ${p.tp} K</em>`;
+      [vc, vp].forEach(v => { v.playbackRate = rate; });
+      // open both on the same moment, the one their cover frames show
+      const t0 = (p.open - 1) / 10;
+      let ready = 0;
+      [vc, vp].forEach(v => v.addEventListener("loadedmetadata", () => {
+        v.currentTime = t0;
+        if (++ready === 2) { scrub.value = t0; show(t0); }
+      }, { once: true }));
+      scrub.value = t0;
+      show(t0);
+      try { history.replaceState(null, "", `#${p.key}`); } catch (e) {}
     }
+
+    // the time readout: 15 s of video span 1 to 150 ms, one frame per ms
+    function show(t) {
+      const ms = Math.min(150, Math.floor(t * 10) + 1);
+      timeEl.textContent = `t = ${ms} ms`;
+    }
+
+    function play() {
+      if (Math.abs(vp.currentTime - vc.currentTime) > 0.05) vp.currentTime = vc.currentTime;
+      Promise.all([vc.play(), vp.play()]).catch(() => {});
+      icon.innerHTML = PAUSE;
+      playBtn.setAttribute("aria-label", "Pause both videos");
+      requestAnimationFrame(tick);
+    }
+    function pause() {
+      vc.pause(); vp.pause();
+      icon.innerHTML = PLAY;
+      playBtn.setAttribute("aria-label", "Play both videos");
+    }
+    const toggle = () => (vc.paused ? play() : pause());
+
+    // keep the Poisson video locked to the clustered one while they play
+    function tick() {
+      if (vc.paused) return;
+      if (Math.abs(vp.currentTime - vc.currentTime) > 0.08) vp.currentTime = vc.currentTime;
+      scrub.value = vc.currentTime;
+      show(vc.currentTime);
+      requestAnimationFrame(tick);
+    }
+
+    playBtn.addEventListener("click", toggle);
+    [vc, vp].forEach(v => v.addEventListener("click", toggle));
+    vc.addEventListener("ended", () => { pause(); vp.pause(); });
+
+    scrub.addEventListener("input", () => {
+      const t = parseFloat(scrub.value);
+      vc.currentTime = t; vp.currentTime = t;
+      show(t);
+    });
+
+    document.querySelectorAll(".speeds button").forEach(b => {
+      b.addEventListener("click", () => {
+        rate = parseFloat(b.dataset.rate);
+        [vc, vp].forEach(v => { v.playbackRate = rate; });
+        document.querySelectorAll(".speeds button").forEach(x =>
+          x.setAttribute("aria-pressed", x === b));
+      });
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.code === "Space" && e.target === document.body) { e.preventDefault(); toggle(); }
+    });
+
+    // open on the pair named in the address (#a, #b, #c), else pair (a)
+    const start = PAIRS.findIndex(p => `#${p.key}` === location.hash);
+    select(start >= 0 ? start : 0);
   </script>
-
 </body>
-
 </html>
