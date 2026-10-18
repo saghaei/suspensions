@@ -309,7 +309,7 @@
       b.innerHTML =
         `<span class="thumbs"><img class="c" src="posters/clustered_${p.key}.jpg" alt="">` +
         `<img class="p" src="posters/poisson_${p.key}.jpg" alt=""></span>` +
-        `<span><b>Pair (${p.key})</b><small>φ = ${p.phi} · N<sub>p</sub> = ${p.np}</small></span>`;
+        `<span><b>Pair (${p.key})</b><small>N<sub>p</sub> = ${p.np}</small></span>`;
       b.addEventListener("click", () => select(i));
       tabs.appendChild(b);
     });
